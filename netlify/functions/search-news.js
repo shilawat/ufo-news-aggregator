@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event, context) => {
-  // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -9,7 +8,6 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Get query from request body
   const { query } = JSON.parse(event.body);
 
   if (!query) {
@@ -33,15 +31,7 @@ exports.handler = async (event, context) => {
         messages: [
           {
             role: 'user',
-            content: `Search for recent news about: ${query}. Find 5-8 recent articles with headlines, brief summaries, and sources. Return ONLY a JSON array with this exact structure, no other text:
-[
-  {
-    "title": "Article headline",
-    "summary": "Brief 1-2 sentence summary",
-    "source": "Source name",
-    "date": "Approximate date like 'January 2026' or 'Recent'"
-  }
-]`
+            content: 'Search for recent news about: ' + query + '. Find 5-8 recent articles with headlines, brief summaries, and sources. Return ONLY a JSON array with this exact structure, no other text: [{"title": "Article headline", "summary": "Brief 1-2 sentence summary", "source": "Source name", "date": "Approximate date like January 2026 or Recent"}]'
           }
         ],
         tools: [
