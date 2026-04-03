@@ -13,7 +13,6 @@ const App = () => {
     setArticles([]);
 
     try {
-      // IMPORTANT: Call Netlify Function, NOT Anthropic API directly
       const response = await fetch('/.netlify/functions/search-news', {
         method: 'POST',
         headers: {
@@ -28,13 +27,28 @@ const App = () => {
 
       const data = await response.json();
       
+      // Check if data has the expected structure
       let resultText = '';
-      for (const block of data.content) {
-        if (block.type === 'text') {
-          resultText += block.text;
+      
+      if (data.content && Array.isArray(data.content)) {
+        for (const block of data.content) {
+          if (block.type === 'text') {
+            resultText += block.text;
+          }
         }
+      } else if (data.error) {
+        throw new Error(data.error);
+      } else {
+        // If data is already the articles array
+        if (Array.isArray(data)) {
+          setArticles(data);
+          return;
+        }
+        console.log('Unexpected response format:', data);
+        throw new Error('Unexpected response format');
       }
 
+      // Extract JSON array from the text
       const jsonMatch = resultText.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -44,7 +58,7 @@ const App = () => {
       }
     } catch (err) {
       setError('Failed to fetch news. Please try again.');
-      console.error(err);
+      console.error('Search error:', err);
     } finally {
       setLoading(false);
     }
