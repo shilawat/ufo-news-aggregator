@@ -29,3 +29,6 @@ yarn-error.log*
 *.swp
 *.swo
 .env.example
+
+# Local Netlify folder
+.netlify
