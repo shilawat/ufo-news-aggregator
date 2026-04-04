@@ -44,7 +44,9 @@ const App = () => {
         }
       } else if (data.error) {
         console.error('API returned error:', data.error);
-        throw new Error(data.error);
+        console.error('Error details:', JSON.stringify(data.error, null, 2));
+        console.error('Full data object:', JSON.stringify(data, null, 2));
+        throw new Error(typeof data.error === 'string' ? data.error : JSON.stringify(data.error));
       } else {
         // If data is already the articles array
         if (Array.isArray(data)) {
