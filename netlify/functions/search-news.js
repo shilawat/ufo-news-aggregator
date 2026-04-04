@@ -1,15 +1,15 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event, context) => {
-  // Add CORS headers
+  // CORS headers - allows requests from any domain
   const headers = {
-    'Access-Control-Allow-Origin': '*', // Or specify your IONOS domain
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json',
   };
 
-  // Handle preflight request
+  // Handle preflight OPTIONS request
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 204,

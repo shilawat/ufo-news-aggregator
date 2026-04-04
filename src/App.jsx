@@ -15,7 +15,7 @@ const App = () => {
     try {
       console.log('Fetching news for:', query);
 
-      const response = await fetch('/.netlify/functions/search-news', {
+      const response = await fetch('https://ufonews.netlify.app/.netlify/functions/search-news', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,6 +59,26 @@ const App = () => {
       }
 
       console.log('Result text:', resultText.substring(0, 200));
+
+
+      // In src/App.jsx, update the fetch URL:
+
+  const searchNews = async (query) => {
+  setLoading(true);
+  setError('');
+  setArticles([]);
+
+  try {
+    // Use full Netlify URL instead of relative path
+    const response = await fetch('https://ufonews.netlify.app/.netlify/functions/search-news', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query })
+    });
+
+    // ... rest of your code
 
       // Extract JSON array from the text
       const jsonMatch = resultText.match(/\[[\s\S]*\]/);
