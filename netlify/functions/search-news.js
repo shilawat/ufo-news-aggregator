@@ -47,6 +47,7 @@ exports.handler = async (event) => {
     payload = {
       model:      'claude-haiku-4-5-20251001',
       max_tokens: 1500,
+      system:     'You are a UAP/UFO news aggregator. Search the web and return ONLY a JSON array of news articles, no prose, no markdown, no explanation. Each item must have: title (string), source (string), date (string), summary (string, 1-2 sentences), url (string). Return at least 5 articles. Example: [{"title":"...","source":"...","date":"...","summary":"...","url":"..."}]',
       messages:   [{ role: 'user', content: body.query || 'latest UAP UFO news 2025' }],
       tools:      [{ type: 'web_search_20250305', name: 'web_search' }],
     };
